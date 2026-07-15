@@ -1,0 +1,16 @@
+# Trivy — https://trivy.dev
+# Run: trivy config --config trivy.yaml .
+#      trivy fs --config trivy.yaml .
+scan:
+  scanners:
+    - vuln
+    - misconfig
+    - secret
+severity:
+  - HIGH
+  - CRITICAL
+misconfiguration:
+  terraform:
+    exclude-downloaded-modules: true
+# Do not fail local runs; CI decides gating via --exit-code.
+exit-code: 0

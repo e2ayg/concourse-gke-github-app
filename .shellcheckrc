@@ -1,0 +1,3 @@
+# ShellCheck — https://www.shellcheck.net
+# Do not try to follow `source`d files (scripts here don't source others).
+external-sources=false

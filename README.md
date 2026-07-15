@@ -1,5 +1,10 @@
 # Concourse on GKE with GitHub App authentication
 
+[![ci](https://github.com/e2ayg/concourse-gke-github-app/actions/workflows/ci.yml/badge.svg)](https://github.com/e2ayg/concourse-gke-github-app/actions/workflows/ci.yml)
+[![security](https://github.com/e2ayg/concourse-gke-github-app/actions/workflows/security.yml/badge.svg)](https://github.com/e2ayg/concourse-gke-github-app/actions/workflows/security.yml)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/e2ayg/concourse-gke-github-app/badge)](https://scorecard.dev/viewer/?uri=github.com/e2ayg/concourse-gke-github-app)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 Production-ready Terraform module and supporting tooling to onboard **Concourse CI**
 onto an **existing GKE cluster**, with **GitHub App installation tokens** for private
 repository access in pipelines and an **optional GitHub OAuth App** for UI login.
@@ -265,6 +270,54 @@ fly -t main trigger-job -j example/build -w
 | Git checkout `Authentication failed` | Token expired (refresh interval too long) or username not `x-access-token`. |
 
 ---
+
+## Development & security tooling
+
+Quality/security is enforced locally via **pre-commit** and in CI via GitHub
+Actions. Python tasks use **[uv](https://docs.astral.sh/uv/)**.
+
+```bash
+# One-time local setup
+pipx install pre-commit    # or: uv tool install pre-commit
+pre-commit install
+pre-commit run --all-files
+
+# Or use the Makefile
+make help          # list targets
+make lint          # fmt-check + validate + tflint + ruff + shellcheck + hadolint
+make security      # checkov + trivy + gitleaks + bandit
+make all
+```
+
+**Tooling used** (all configured at the repo root):
+
+| Concern | Tool | Config |
+|---------|------|--------|
+| Terraform format | `terraform fmt` | — |
+| Terraform validate | `terraform validate` | — |
+| Terraform lint | **tflint** (+ google ruleset) | `.tflint.hcl` |
+| IaC/misconfig scan | **checkov** | `.checkov.yaml` |
+| Vuln/misconfig/secret scan | **trivy** | `trivy.yaml`, `.trivyignore` |
+| Secret detection | **gitleaks** | `.gitleaks.toml` |
+| Python security | **bandit** | `pyproject.toml` |
+| Python lint/format | **ruff** | `pyproject.toml` |
+| Shell format/lint | **shfmt** + **shellcheck** | `.editorconfig`, `.shellcheckrc` |
+| Dockerfile lint | **hadolint** | `.hadolint.yaml` |
+| Actions lint | **actionlint** | — |
+| Supply chain | **Dependabot**, **OpenSSF Scorecard** | `.github/dependabot.yml`, `scorecard.yml` |
+
+**CI gate policy** (`.github/workflows/`):
+
+- **Blocking:** `terraform fmt -check`, `terraform validate`, `actionlint`,
+  `gitleaks`, `bandit`.
+- **Advisory (results uploaded to the GitHub *Security* tab as SARIF):**
+  `checkov`, `trivy`, `tflint`. Promote any of these to blocking by removing its
+  `continue-on-error`/`soft_fail`.
+
+> Pin note: GitHub Actions are pinned to version tags for readability; for
+> maximum supply-chain hardening, pin to commit SHAs (Dependabot will still keep
+> them updated). `pre-commit` hook `rev`s can be refreshed with
+> `pre-commit autoupdate`.
 
 ## References (official documentation)
 

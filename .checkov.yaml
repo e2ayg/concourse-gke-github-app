@@ -1,0 +1,22 @@
+# Checkov — https://www.checkov.io
+# Run: checkov --config-file .checkov.yaml
+directory:
+  - .
+framework:
+  - terraform
+  - dockerfile
+  - github_actions
+  - secrets
+compact: true
+quiet: true
+download-external-modules: false
+
+# Non-blocking locally so scanners inform rather than gate commits.
+# CI uploads SARIF to the GitHub Security tab. Flip to false to hard-gate.
+soft-fail: true
+
+# Documented skips (add IDs with justification only):
+skip-check:
+  # Secret Manager CMEK: the automatic-replication secret is protected by
+  # Google-managed encryption; CMEK can be enabled per environment policy.
+  - CKV_GCP_82

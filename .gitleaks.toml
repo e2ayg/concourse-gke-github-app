@@ -1,0 +1,17 @@
+# Gitleaks — https://github.com/gitleaks/gitleaks
+title = "concourse-gke-github-app gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Placeholders and documentation are not real secrets."
+paths = [
+  '''examples/basic/terraform\.tfvars\.example''',
+  '''.*\.md$''',
+]
+regexes = [
+  '''x-access-token''',
+  '''CHANGEME''',
+  '''\(\(github-app-token\)\)''',
+]

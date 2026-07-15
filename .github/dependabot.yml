@@ -1,6 +1,27 @@
 version: 2
 updates:
-  - package-ecosystem: "" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: github-actions
+    directory: /
     schedule:
-      interval: "daily"
+      interval: daily
+    labels: [dependencies, github-actions]
+
+  - package-ecosystem: terraform
+    directories:
+      - /modules/concourse-gke-github-app
+      - /examples/basic
+    schedule:
+      interval: daily
+    labels: [dependencies, terraform]
+
+  - package-ecosystem: pip
+    directory: /token-refresher
+    schedule:
+      interval: daily
+    labels: [dependencies, python]
+
+  - package-ecosystem: docker
+    directory: /token-refresher
+    schedule:
+      interval: daily
+    labels: [dependencies, docker]

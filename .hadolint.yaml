@@ -1,0 +1,10 @@
+# Hadolint — https://github.com/hadolint/hadolint
+failure-threshold: warning
+trustedRegistries:
+  - docker.io
+  - gcr.io
+  - "*.pkg.dev"
+ignored:
+  # Base image is pinned by tag (3.12-slim); digest pinning is documented as the
+  # production-hardening step in the Dockerfile.
+  - DL3007

@@ -1,0 +1,4 @@
+# Trivy ignore file — https://trivy.dev/latest/docs/configuration/filtering/
+# Add CVE IDs or misconfiguration check IDs with a justification comment.
+# Example:
+#   AVD-GCP-0001   # rationale

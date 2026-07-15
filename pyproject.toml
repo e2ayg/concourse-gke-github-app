@@ -1,0 +1,21 @@
+# Python tooling config for the token refresher (token-refresher/).
+
+[tool.bandit]
+# Bandit — https://bandit.readthedocs.io
+exclude_dirs = [".git", ".terraform", ".venv"]
+
+[tool.ruff]
+# Ruff — https://docs.astral.sh/ruff
+target-version = "py312"
+line-length = 100
+src = ["token-refresher"]
+
+[tool.ruff.lint]
+# E/F pycodestyle+pyflakes, I isort, B bugbear, UP pyupgrade,
+# S flake8-bandit, SIM flake8-simplify.
+select = ["E", "F", "I", "B", "UP", "S", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+# The refresher deliberately catches broad exceptions at the top level to
+# guarantee a non-zero exit and full traceback logging.
+"token-refresher/refresh_token.py" = ["BLE001"]

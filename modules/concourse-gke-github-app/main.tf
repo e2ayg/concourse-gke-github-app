@@ -135,7 +135,7 @@ resource "google_service_account" "token_refresher" {
   project      = var.project_id
   account_id   = var.service_account_id
   display_name = "Concourse GitHub App token refresher"
-  description  = "Reads the GitHub App private key from Secret Manager for cluster ${var.cluster_name}. Managed by Terraform."
+  description  = "Reads the GitHub App private key from Secret Manager for cluster ${var.cluster_name} (${var.region}). Managed by Terraform."
 
   depends_on = [google_project_service.required]
 }

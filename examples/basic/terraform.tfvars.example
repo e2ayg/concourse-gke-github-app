@@ -1,0 +1,44 @@
+###############################################################################
+# Copy to terraform.tfvars and edit. NEVER commit real secrets.
+#   cp terraform.tfvars.example terraform.tfvars
+#
+# Secrets (GitHub App private key, OAuth client secret, local user passwords)
+# should be provided via environment variables (TF_VAR_*) or a secrets manager,
+# NOT stored in this file. See README for the recommended out-of-band flow.
+###############################################################################
+
+# --- Core GCP / cluster ------------------------------------------------------
+project_id   = "my-gcp-project"
+region       = "europe-west1"       # must be the cluster's location (region for regional clusters)
+cluster_name = "my-existing-gke-cluster"
+
+labels = {
+  managed-by  = "terraform"
+  component   = "concourse-ci"
+  environment = "prod"
+}
+
+# --- Concourse ---------------------------------------------------------------
+concourse_external_url = "https://concourse.example.com"
+chart_version          = "20.2.3"
+namespace              = "concourse"
+team_name              = "main"
+
+# --- GitHub App (private repository access for pipelines) --------------------
+github_app_id              = "123456"
+github_app_installation_id = "78901234"
+# Optional: scope installation tokens to specific repo NAMES (not full paths).
+github_repositories = ["my-private-repo"]
+
+# Token refresher image (build & push first; see scripts/build-token-refresher-image.sh)
+token_refresher_image = "europe-west1-docker.pkg.dev/my-gcp-project/concourse/concourse-token-refresher:1.0.0"
+
+# --- Optional: GitHub OAuth App for Concourse UI login -----------------------
+# github_oauth_client_id      = "Iv1.xxxxxxxxxxxx"   # prefer TF_VAR_github_oauth_client_id
+# github_oauth_client_secret  = ""                    # set via TF_VAR_github_oauth_client_secret
+# github_oauth_main_team_user = "my-github-username"
+# github_oauth_main_team_org  = "my-github-org"
+
+# --- Optional: local user login (instead of / in addition to OAuth) ----------
+# concourse_local_users          = "admin:CHANGEME"   # set via TF_VAR_concourse_local_users
+# concourse_main_team_local_user = "admin"

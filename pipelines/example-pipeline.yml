@@ -1,0 +1,47 @@
+###############################################################################
+# Example Concourse pipeline: check out a PRIVATE GitHub repository using a
+# GitHub App installation token supplied by the Kubernetes credential manager.
+#
+# The credential ((github-app-token)) resolves to the Secret named
+# "github-app-token" (key "value") in the team namespace, kept fresh by the
+# token refresher CronJob.
+#
+# Auth pattern (official GitHub docs): use "x-access-token" as the username and
+# the installation token as the password over HTTPS.
+#   https://docs.github.com/en/apps/creating-github-apps/authenticating-with-a-github-app/authenticating-as-a-github-app-installation
+###############################################################################
+
+resources:
+  - name: my-private-repo
+    type: git
+    icon: github
+    source:
+      uri: https://github.com/YOUR_ORG/YOUR_PRIVATE_REPO.git
+      branch: main
+      username: x-access-token
+      password: ((github-app-token))
+
+jobs:
+  - name: build
+    plan:
+      - get: my-private-repo
+        trigger: true
+
+      - task: list-repo-contents
+        config:
+          platform: linux
+          image_resource:
+            type: registry-image
+            source:
+              repository: busybox
+              tag: "1.36"
+          inputs:
+            - name: my-private-repo
+          run:
+            path: sh
+            args:
+              - -exc
+              - |
+                echo "Checked out private repo via GitHub App token:"
+                ls -la my-private-repo
+                git -C my-private-repo log --oneline -n 5 || true

@@ -1,0 +1,41 @@
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+crash.log
+crash.*.log
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Keep provider lock files
+!**/.terraform.lock.hcl
+
+# Secrets / keys — never commit
+*.pem
+*.key
+*-private-key*
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Local tooling state / scaffolding (ruflo / claude-flow) — never publish
+.claude-flow/
+.swarm/
+ruvector.db
+*.db
+*.db-shm
+*.db-wal
+# Uncomment to also exclude the ruflo/claude workspace config from the repo:
+# .claude/
+# CLAUDE.md

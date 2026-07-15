@@ -314,9 +314,10 @@ make all
   `checkov`, `trivy`, `tflint`. Promote any of these to blocking by removing its
   `continue-on-error`/`soft_fail`.
 
-> Pin note: GitHub Actions are pinned to version tags for readability; for
-> maximum supply-chain hardening, pin to commit SHAs (Dependabot will still keep
-> them updated). `pre-commit` hook `rev`s can be refreshed with
+> Pin note: all GitHub Actions are pinned to full **commit SHAs** (supply-chain
+> hardening), with the human-readable version in a trailing comment; Dependabot
+> keeps the SHAs and comments updated. Container actions are pinned by image
+> **digest**. `pre-commit` hook `rev`s can be refreshed with
 > `pre-commit autoupdate`.
 
 ## References (official documentation)

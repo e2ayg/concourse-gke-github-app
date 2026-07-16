@@ -295,7 +295,7 @@ make all
 |---------|------|--------|
 | Terraform format | `terraform fmt` | — |
 | Terraform validate | `terraform validate` | — |
-| Terraform lint | **tflint** (+ google ruleset) | `.tflint.hcl` |
+| Terraform lint | **tflint** (bundled terraform ruleset) | `.tflint.hcl` |
 | IaC/misconfig scan | **checkov** | `.checkov.yaml` |
 | Vuln/misconfig/secret scan | **trivy** | `trivy.yaml`, `.trivyignore` |
 | Secret detection | **gitleaks** | `.gitleaks.toml` |

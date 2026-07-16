@@ -5,7 +5,7 @@
 #
 # For production, pin the base image by digest:
 #   FROM python:3.12-slim@sha256:<digest>
-FROM python:3.12-slim
+FROM python:3.14-slim
 
 # uv — fast, reproducible Python installer (https://docs.astral.sh/uv/).
 # This is a build-time-only tool; pin by tag/digest for production builds.

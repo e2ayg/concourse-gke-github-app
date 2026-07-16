@@ -24,7 +24,7 @@ terraform {
 
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.30"
+      version = "~> 3.2"
     }
 
     # Helm provider v3 uses the terraform-plugin-framework. `set`/`set_sensitive`

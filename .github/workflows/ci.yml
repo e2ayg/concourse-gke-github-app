@@ -54,11 +54,14 @@ jobs:
     name: tflint (advisory)
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    continue-on-error: true # advisory: never blocks CI (also tolerates upstream `tflint --init` crashes)
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - uses: terraform-linters/setup-tflint@6e1e0642c0289bd619021bf6b34e3c08ed1e005a # v6.3.0
         with:
-          tflint_version: latest
+          # Pinned: 'latest' (v0.63.x) panics in plugin signature verification
+          # (sigstore VerifyTransparencyLogInclusion). Revisit when upstream fixes it.
+          tflint_version: v0.62.1
       - name: tflint --init
         run: tflint --init
         env:

@@ -1,7 +1,7 @@
 # Pinned with conservative ranges; resolved at image build time.
 # Verify latest stable releases before building for production.
 PyJWT>=2.8,<3.0
-cryptography>=42.0,<44.0
+cryptography>=49.0.0,<50.0
 requests>=2.31,<3.0
 google-cloud-secret-manager>=2.20,<3.0
 kubernetes>=29.0,<32.0

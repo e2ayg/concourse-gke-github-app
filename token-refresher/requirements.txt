@@ -3,5 +3,5 @@
 PyJWT>=2.13.0,<3.0
 cryptography>=49.0.0,<50.0
 requests>=2.34.2,<3.0
-google-cloud-secret-manager>=2.29.0,<3.0
+google-cloud-secret-manager>=2.30.0,<3.0
 kubernetes>=36.0.3,<37.0

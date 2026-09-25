@@ -98,13 +98,9 @@ def create_installation_token(
         body["repositories"] = repositories
         log.info("Scoping installation token to repositories: %s", repositories)
 
-    response = requests.post(
-        url, headers=headers, json=body, timeout=HTTP_TIMEOUT_SECONDS
-    )
+    response = requests.post(url, headers=headers, json=body, timeout=HTTP_TIMEOUT_SECONDS)
     if response.status_code != 201:
-        log.error(
-            "GitHub token request failed: %s %s", response.status_code, response.text
-        )
+        log.error("GitHub token request failed: %s %s", response.status_code, response.text)
         response.raise_for_status()
 
     data = response.json()
@@ -112,9 +108,7 @@ def create_installation_token(
     return data["token"]
 
 
-def patch_k8s_secret(
-    namespace: str, secret_name: str, key: str, token: str
-) -> None:
+def patch_k8s_secret(namespace: str, secret_name: str, key: str, token: str) -> None:
     """Patch the short-lived token into the target Kubernetes Secret."""
     k8s_config.load_incluster_config()
     core = k8s_client.CoreV1Api()
@@ -137,9 +131,7 @@ def main() -> int:
     installation_id = _require_env("GITHUB_INSTALLATION_ID")
     api_url = os.environ.get("GITHUB_API_URL", "https://api.github.com").strip()
     repositories = [
-        r.strip()
-        for r in os.environ.get("GITHUB_REPOSITORIES", "").split(",")
-        if r.strip()
+        r.strip() for r in os.environ.get("GITHUB_REPOSITORIES", "").split(",") if r.strip()
     ]
     target_namespace = _require_env("TARGET_NAMESPACE")
     target_secret = _require_env("TARGET_SECRET_NAME")

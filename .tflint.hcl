@@ -1,24 +1,22 @@
 # TFLint — https://github.com/terraform-linters/tflint
-#   tflint --init        # (no-op: only the bundled terraform ruleset is used)
+#   tflint --init        # downloads + verifies the google ruleset (needs tflint >= 0.64.0)
 #   tflint --recursive   # lint all modules
 config {
   # Lint locally-referenced child modules too.
   call_module_type = "local"
 }
 
-# Bundled Terraform ruleset (no external download/signature verification).
+# Bundled Terraform ruleset.
 plugin "terraform" {
   enabled = true
   preset  = "recommended"
 }
 
-# NOTE: the external tflint-ruleset-google plugin was intentionally removed.
-# `tflint --init` currently crashes verifying external-plugin attestations
-# (sigstore VerifyTransparencyLogInclusion nil deref) across tflint versions,
-# and its value for this IAM/Secret/K8s-focused module is marginal. Re-add once
-# the upstream signature-verification crash is fixed:
-#   plugin "google" {
-#     enabled = true
-#     version = "0.31.0"
-#     source  = "github.com/terraform-linters/tflint-ruleset-google"
-#   }
+# Google ruleset. Requires tflint >= 0.64.0: earlier versions crash in
+# `tflint --init` while verifying the plugin's sigstore attestation
+# (nil deref in bundle.TlogEntries; fixed in terraform-linters/tflint#2597).
+plugin "google" {
+  enabled = true
+  version = "0.40.0"
+  source  = "github.com/terraform-linters/tflint-ruleset-google"
+}

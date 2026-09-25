@@ -37,10 +37,10 @@ module "concourse" {
 
 | Provider | Version | Verified with |
 |----------|---------|---------------|
-| `hashicorp/google` | `~> 7.0` | 7.40.0 |
+| `hashicorp/google` | `~> 8.4` | 8.4.0 |
 | `hashicorp/kubernetes` | `~> 3.2` | 3.2.1 |
-| `hashicorp/helm` | `~> 3.0` | 3.2.0 |
-| Terraform | `>= 1.5.0` | 1.14.0 |
+| `hashicorp/helm` | `~> 3.3` | 3.3.0 |
+| Terraform | `>= 1.5.0` | 1.16.4 |
 
 ## Inputs (selected)
 
@@ -55,7 +55,7 @@ module "concourse" {
 | `token_refresher_image` | string | — | Refresher container image (required) |
 | `github_repositories` | list(string) | `[]` | Repo names to scope the token (empty = all) |
 | `github_api_url` | string | `https://api.github.com` | GitHub REST base URL (GHES supported) |
-| `chart_version` | string | `20.2.3` | Concourse Helm chart version |
+| `chart_version` | string | `20.3.0` | Concourse Helm chart version (Concourse 8.3.0) |
 | `namespace` | string | `concourse` | Concourse install namespace |
 | `namespace_prefix` | string | `concourse-` | Team namespace prefix |
 | `team_name` | string | `main` | Concourse team |

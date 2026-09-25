@@ -30,7 +30,7 @@ variable "concourse_external_url" {
 variable "chart_version" {
   description = "Concourse Helm chart version."
   type        = string
-  default     = "20.2.3"
+  default     = "20.3.0"
 }
 
 variable "namespace" {

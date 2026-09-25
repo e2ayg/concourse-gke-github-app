@@ -18,7 +18,7 @@ concurrency:
 jobs:
   fmt:
     name: terraform fmt
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -30,7 +30,7 @@ jobs:
 
   validate:
     name: terraform validate
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     strategy:
       fail-fast: false
@@ -52,7 +52,7 @@ jobs:
 
   tflint:
     name: tflint (advisory)
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     continue-on-error: true # advisory: never blocks CI (also tolerates upstream `tflint --init` crashes)
     steps:
@@ -70,7 +70,7 @@ jobs:
 
   actionlint:
     name: actionlint
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -81,7 +81,7 @@ jobs:
 
   docker-build:
     name: token-refresher image
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

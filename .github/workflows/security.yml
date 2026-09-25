@@ -19,7 +19,7 @@ concurrency:
 jobs:
   checkov:
     name: checkov (SARIF)
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     continue-on-error: true # advisory: never blocks the workflow
     permissions:
@@ -46,7 +46,7 @@ jobs:
 
   trivy:
     name: trivy (SARIF)
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 15
     continue-on-error: true # advisory: never blocks the workflow
     permissions:
@@ -73,7 +73,7 @@ jobs:
 
   gitleaks:
     name: gitleaks (secrets)
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -87,7 +87,7 @@ jobs:
 
   bandit:
     name: bandit (python)
-    runs-on: ubuntu-26.04
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

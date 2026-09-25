@@ -68,7 +68,7 @@ variable "team_name" {
 variable "chart_version" {
   description = "Version of the official Concourse Helm chart (https://concourse-charts.storage.googleapis.com/). Verify the latest stable version on ArtifactHub before pinning."
   type        = string
-  default     = "20.2.3"
+  default     = "20.3.0"
 }
 
 variable "concourse_external_url" {

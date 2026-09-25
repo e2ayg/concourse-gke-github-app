@@ -41,7 +41,7 @@ echo "==> Build context: ${CONTEXT_DIR}"
 if [[ "${1:-}" == "--create-repo" ]]; then
   echo "==> Ensuring Artifact Registry repo '${REPO}' exists in ${REGION}..."
   if ! gcloud artifacts repositories describe "${REPO}" \
-    --project="${PROJECT_ID}" --location="${REGION}" >/dev/null 2>&1; then
+    --project="${PROJECT_ID}" --location="${REGION}" > /dev/null 2>&1; then
     gcloud artifacts repositories create "${REPO}" \
       --project="${PROJECT_ID}" \
       --location="${REGION}" \

@@ -6,7 +6,7 @@ exclude_dirs = [".git", ".terraform", ".venv"]
 
 [tool.ruff]
 # Ruff — https://docs.astral.sh/ruff
-target-version = "py312"
+target-version = "py314"
 line-length = 100
 src = ["token-refresher"]
 

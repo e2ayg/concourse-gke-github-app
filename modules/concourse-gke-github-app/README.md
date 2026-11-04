@@ -55,7 +55,7 @@ module "concourse" {
 | `token_refresher_image` | string | — | Refresher container image (required) |
 | `github_repositories` | list(string) | `[]` | Repo names to scope the token (empty = all) |
 | `github_api_url` | string | `https://api.github.com` | GitHub REST base URL (GHES supported) |
-| `chart_version` | string | `20.3.0` | Concourse Helm chart version (Concourse 8.3.0) |
+| `chart_version` | string | `20.3.3` | Concourse Helm chart version (Concourse 8.3.3) |
 | `namespace` | string | `concourse` | Concourse install namespace |
 | `namespace_prefix` | string | `concourse-` | Team namespace prefix |
 | `team_name` | string | `main` | Concourse team |

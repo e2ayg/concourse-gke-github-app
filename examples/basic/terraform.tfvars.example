@@ -20,7 +20,7 @@ labels = {
 
 # --- Concourse ---------------------------------------------------------------
 concourse_external_url = "https://concourse.example.com"
-chart_version          = "20.2.3"
+chart_version          = "20.3.3"
 namespace              = "concourse"
 team_name              = "main"
 

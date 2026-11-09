@@ -4,13 +4,13 @@
 # filesystem (all writes go to the mounted emptyDir at /tmp).
 #
 # For production, pin the base image by digest:
-#   FROM python:3.14-slim@sha256:<digest>
+#   FROM python:3.15-slim@sha256:<digest>
 FROM python:3.15-slim
 
 # uv — fast, reproducible Python installer (https://docs.astral.sh/uv/).
-# Build-time-only tool, pinned by tag (Dependabot tracks it); pin by digest for
-# production builds.
-COPY --from=ghcr.io/astral-sh/uv:0.12.19 /uv /uvx /bin/
+# Build-time-only tool, pinned by tag. Dependabot does not bump COPY --from
+# images, so update this by hand; pin by digest for production builds.
+COPY --from=ghcr.io/astral-sh/uv:0.13.7 /uv /uvx /bin/
 
 # Create a non-root user matching the pod securityContext runAsUser (10001).
 RUN groupadd --system --gid 10001 app \

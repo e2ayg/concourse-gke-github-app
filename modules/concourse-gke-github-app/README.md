@@ -37,10 +37,10 @@ module "concourse" {
 
 | Provider | Version | Verified with |
 |----------|---------|---------------|
-| `hashicorp/google` | `~> 8.4` | 8.4.0 |
-| `hashicorp/kubernetes` | `~> 3.2` | 3.2.1 |
+| `hashicorp/google` | `~> 8.10` | 8.10.0 |
+| `hashicorp/kubernetes` | `~> 3.5` | 3.5.0 |
 | `hashicorp/helm` | `~> 3.3` | 3.3.0 |
-| Terraform | `>= 1.5.0` | 1.16.4 |
+| Terraform | `>= 1.5.0` | 1.17.1 |
 
 ## Inputs (selected)
 

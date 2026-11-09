@@ -19,12 +19,12 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 8.4"
+      version = "~> 8.10"
     }
 
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 3.2"
+      version = "~> 3.5"
     }
 
     # Helm provider v3 uses the terraform-plugin-framework. `set`/`set_sensitive`

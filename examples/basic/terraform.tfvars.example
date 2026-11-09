@@ -42,3 +42,7 @@ token_refresher_image = "europe-west1-docker.pkg.dev/my-gcp-project/concourse/co
 # --- Optional: local user login (instead of / in addition to OAuth) ----------
 # concourse_local_users          = "admin:CHANGEME"   # set via TF_VAR_concourse_local_users
 # concourse_main_team_local_user = "admin"
+
+# --- Recommended: replace the chart's published default secrets ---------------
+# Never set these here. Export TF_VAR_concourse_session_signing_key and the
+# other TF_VAR_concourse_* values as shown in the root README.

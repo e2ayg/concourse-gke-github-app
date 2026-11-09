@@ -96,4 +96,12 @@ module "concourse" {
   # Optional: local user login (alternative/addition to GitHub OAuth)
   concourse_local_users          = var.concourse_local_users
   concourse_main_team_local_user = var.concourse_main_team_local_user
+
+  # Recommended: replace the chart's published default secrets (see README)
+  concourse_session_signing_key = var.concourse_session_signing_key
+  concourse_tsa_host_key        = var.concourse_tsa_host_key
+  concourse_tsa_host_key_pub    = var.concourse_tsa_host_key_pub
+  concourse_tsa_worker_key      = var.concourse_tsa_worker_key
+  concourse_tsa_worker_key_pub  = var.concourse_tsa_worker_key_pub
+  concourse_postgres_password   = var.concourse_postgres_password
 }

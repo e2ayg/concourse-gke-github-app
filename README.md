@@ -20,6 +20,7 @@ repository access in pipelines and an **optional GitHub OAuth App** for UI login
 
 ```
 .
+├── docs/architecture.drawio            # runtime, identity and provisioning diagrams
 ├── modules/concourse-gke-github-app/   # the reusable Terraform module
 │   ├── main.tf  variables.tf  outputs.tf  versions.tf  README.md
 ├── examples/basic/                     # runnable example root module
@@ -67,6 +68,9 @@ Manager**, mints a **GitHub App JWT**, exchanges it for a **GitHub installation
 access token**, and patches that short-lived token into a Kubernetes Secret.
 Concourse's **Kubernetes credential manager** exposes it to pipelines as
 `((github-app-token))`.
+
+Detailed diagrams of the runtime flows, identity and trust, and provisioning are
+in [`docs/architecture.drawio`](docs/architecture.drawio). Open it with draw.io.
 
 ---
 
@@ -189,6 +193,41 @@ PROJECT_ID=my-proj REGION=europe-west1 REPO=concourse TAG=1.0.0 \
 
 ---
 
+## Replace the chart's default secrets
+
+The Concourse chart ships published default values for its session signing key,
+TSA keys and PostgreSQL password. Anyone with the public chart holds the same
+values, so set your own for any real deployment. A value left empty keeps the
+chart default.
+
+Generate the keys outside this repository, using the Concourse image that matches
+your chart version:
+
+```bash
+cd "$(mktemp -d)"
+gen() { docker run --rm -u "$(id -u):$(id -g)" -v "$PWD:/k" concourse/concourse:8.3.3 generate-key "$@"; }
+gen -t rsa -f /k/session_signing_key
+gen -t ssh -f /k/tsa_host_key
+gen -t ssh -f /k/worker_key
+
+export TF_VAR_concourse_session_signing_key="$(cat session_signing_key)"
+export TF_VAR_concourse_tsa_host_key="$(cat tsa_host_key)"
+export TF_VAR_concourse_tsa_host_key_pub="$(cat tsa_host_key.pub)"
+export TF_VAR_concourse_tsa_worker_key="$(cat worker_key)"
+export TF_VAR_concourse_tsa_worker_key_pub="$(cat worker_key.pub)"
+export TF_VAR_concourse_postgres_password="$(openssl rand -hex 32)"
+```
+
+- These values are stored in Terraform state, marked sensitive, so keep state in a
+  protected backend.
+- Set `concourse_postgres_password` before the first install. PostgreSQL only
+  applies it when the database is created, so on an existing install change the
+  database user's password first, or web can no longer connect.
+- Changing the session signing key logs users out. Changing either TSA key pair
+  restarts web and workers on the new keys.
+
+---
+
 ## Image build / push flow
 
 `scripts/build-token-refresher-image.sh`:
@@ -251,8 +290,11 @@ fly -t main trigger-job -j example/build -w
   ([PSA](https://kubernetes.io/docs/concepts/security/pod-security-admission/)).
 - **No hard-coded secrets.** Secret values come from variables/`TF_VAR_*`; the
   private key is added out-of-band by default and never enters Terraform state.
-- **Secrets stay sensitive in plan.** OAuth client id/secret and local users are
-  passed with Helm `set_sensitive`.
+- **Secrets stay sensitive in plan.** OAuth client id/secret, local users and the
+  chart secret overrides are passed with Helm `set_sensitive`.
+- **Chart default secrets must be replaced.** The chart's session, TSA and
+  PostgreSQL defaults are public. See
+  [Replace the chart's default secrets](#replace-the-charts-default-secrets).
 
 ---
 

@@ -104,3 +104,45 @@ variable "concourse_main_team_local_user" {
   type        = string
   default     = ""
 }
+
+variable "concourse_session_signing_key" {
+  description = "Replaces the chart's published session signing key. Prefer TF_VAR_concourse_session_signing_key."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_host_key" {
+  description = "Replaces the chart's published TSA host private key. Prefer TF_VAR_concourse_tsa_host_key."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_host_key_pub" {
+  description = "Public half of concourse_tsa_host_key."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_worker_key" {
+  description = "Replaces the chart's published worker private key. Prefer TF_VAR_concourse_tsa_worker_key."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_worker_key_pub" {
+  description = "Public half of concourse_tsa_worker_key."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_postgres_password" {
+  description = "Replaces the chart's published PostgreSQL password. Set before the first install. Prefer TF_VAR_concourse_postgres_password."
+  type        = string
+  default     = ""
+  sensitive   = true
+}

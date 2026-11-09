@@ -75,6 +75,12 @@ module "concourse" {
 | `github_oauth_main_team_org` | string | `""` | main-team org (OAuth) |
 | `concourse_local_users` | string (sensitive) | `""` | `user:pass` local login (optional) |
 | `concourse_main_team_local_user` | string | `""` | main-team admin (local user) |
+| `concourse_session_signing_key` | string (sensitive) | `""` | Replaces the chart's published session signing key |
+| `concourse_tsa_host_key` | string (sensitive) | `""` | Replaces the chart's published TSA host private key |
+| `concourse_tsa_host_key_pub` | string (sensitive) | `""` | Public half of `concourse_tsa_host_key` |
+| `concourse_tsa_worker_key` | string (sensitive) | `""` | Replaces the chart's published worker private key |
+| `concourse_tsa_worker_key_pub` | string (sensitive) | `""` | Public half of `concourse_tsa_worker_key` |
+| `concourse_postgres_password` | string (sensitive) | `""` | Replaces the chart's published PostgreSQL password; set before first install |
 | `additional_helm_values` | string | `""` | Extra raw YAML for the chart (e.g. workers) |
 | `labels` | map(string) | `{managed-by, component}` | Resource labels |
 | `enable_apis` | bool | `true` | Enable required GCP APIs |
@@ -103,6 +109,11 @@ See [`variables.tf`](./variables.tf) for the full set, validations and descripti
 
 - At least one Concourse auth method must be configured (GitHub OAuth **or** a
   main-team local user) — enforced by a `precondition` on the Helm release.
+- The chart ships published default values for its session signing key, TSA keys
+  and PostgreSQL password. Set the `concourse_*` secret variables above to replace
+  them; see [the root README](../../README.md#replace-the-charts-default-secrets).
+  An empty value keeps the chart default. Key pairs must be set together, which a
+  `precondition` on the Helm release enforces.
 - The token secret uses `lifecycle { ignore_changes = [data] }` so Terraform does
   not revert the CronJob's writes.
 - Team-namespace resources (token secret + RBAC) `depend_on` the Helm release,

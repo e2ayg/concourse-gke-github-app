@@ -133,6 +133,55 @@ variable "concourse_main_team_local_user" {
 }
 
 ###############################################################################
+# Concourse chart secrets (recommended for any real deployment)
+#
+# The chart ships published default values for these. Anyone with the public
+# chart holds the same keys. Each value left empty keeps the chart default.
+###############################################################################
+
+variable "concourse_session_signing_key" {
+  description = "RSA private key (PEM) that signs Concourse sessions. Replaces the chart's published default."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_host_key" {
+  description = "SSH private key of the Concourse TSA (worker gateway). Replaces the chart's published default. Set together with concourse_tsa_host_key_pub."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_host_key_pub" {
+  description = "SSH public key matching concourse_tsa_host_key. Workers use it to verify the TSA."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_worker_key" {
+  description = "SSH private key that workers use to register with the TSA. Replaces the chart's published default. Set together with concourse_tsa_worker_key_pub."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_tsa_worker_key_pub" {
+  description = "SSH public key matching concourse_tsa_worker_key. The TSA uses it to authorize workers."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+variable "concourse_postgres_password" {
+  description = "Password for the chart's in-cluster PostgreSQL. Replaces the chart's published default. Set before the first install: PostgreSQL only applies it when the database is created."
+  type        = string
+  default     = ""
+  sensitive   = true
+}
+
+###############################################################################
 # GitHub App -- private repository access (pipeline credentials)
 ###############################################################################
 

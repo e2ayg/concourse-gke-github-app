@@ -20,6 +20,8 @@ cp terraform.tfvars.example terraform.tfvars
 export TF_VAR_github_oauth_client_id='...'      # optional (UI login)
 export TF_VAR_github_oauth_client_secret='...'  # optional (UI login)
 export TF_VAR_concourse_local_users='admin:...' # optional (local login)
+# Recommended: replace the chart's published default secrets. See
+# "Replace the chart's default secrets" in the root README.
 
 # 3. Build & push the token refresher image, then set token_refresher_image
 PROJECT_ID=my-proj REGION=europe-west1 REPO=concourse TAG=1.0.0 \

@@ -77,12 +77,32 @@ locals {
     }
   }
 
+  # Chart secrets the caller can replace, keyed by Helm value path. An empty
+  # value keeps the chart's published default.
+  chart_secret_overrides = {
+    "secrets.sessionSigningKey" = var.concourse_session_signing_key
+    "secrets.hostKey"           = var.concourse_tsa_host_key
+    "secrets.hostKeyPub"        = var.concourse_tsa_host_key_pub
+    "secrets.workerKey"         = var.concourse_tsa_worker_key
+    "secrets.workerKeyPub"      = var.concourse_tsa_worker_key_pub
+    "postgresql.auth.password"  = var.concourse_postgres_password
+  }
+
   # Sensitive Helm values passed via set_sensitive so they are masked in plan
   # output. Helm provider v3 uses list-of-object attribute syntax.
   sensitive_sets = concat(
     var.github_oauth_client_id != "" ? [{ name = "secrets.githubClientId", value = var.github_oauth_client_id }] : [],
     var.github_oauth_client_secret != "" ? [{ name = "secrets.githubClientSecret", value = var.github_oauth_client_secret }] : [],
     var.concourse_local_users != "" ? [{ name = "secrets.localUsers", value = var.concourse_local_users }] : [],
+    [
+      for name, value in local.chart_secret_overrides : {
+        name = name
+        # Helm's set syntax treats a backslash, a comma and a leading brace as
+        # special, so escape them to pass the value through unchanged.
+        value = replace(replace(replace(value, "\\", "\\\\"), ",", "\\,"), "{", "\\{")
+        type  = "string"
+      } if value != ""
+    ],
   )
 }
 
@@ -183,6 +203,16 @@ resource "helm_release" "concourse" {
     precondition {
       condition     = local.github_oauth_enabled || var.concourse_main_team_local_user != ""
       error_message = "Configure at least one Concourse auth method: GitHub OAuth (github_oauth_client_id + github_oauth_client_secret) or a main-team local user (concourse_local_users + concourse_main_team_local_user)."
+    }
+
+    precondition {
+      condition     = (var.concourse_tsa_host_key == "") == (var.concourse_tsa_host_key_pub == "")
+      error_message = "Set concourse_tsa_host_key and concourse_tsa_host_key_pub together, so web and workers hold matching halves of the key pair."
+    }
+
+    precondition {
+      condition     = (var.concourse_tsa_worker_key == "") == (var.concourse_tsa_worker_key_pub == "")
+      error_message = "Set concourse_tsa_worker_key and concourse_tsa_worker_key_pub together, so web and workers hold matching halves of the key pair."
     }
   }
 }
